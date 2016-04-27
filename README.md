@@ -20,17 +20,34 @@ try {
     throw new RuntimeException(e);
 }
 
-doSomethingWith(result);
+process(result);
 ```
 
 ## With `uncheck` ##
-Using **uncheck**, you can improve the readability of your code by reducing the boilerplate part of it:
+Using **uncheck**, you can improve the readability of your code by removing the boilerplate part of it:
 ```java
-uncheck(() -> unsafeMethod());
+uncheck(this::unsafeMethod);
 ```
 
-It also handle nicely return values:
+It also nicely handles methods returning values:
 ```java
-object result = uncheck(() -> unsafeMethod());
-doSomethingWith(result);
+Object result = uncheck(this::unsafeMethod);
+process(result);
+```
+
+**Note**
+
+Caught exceptions are processed this way:
+- RuntimeException are just propagated as they are
+- IOException are wrapped inside UncheckedIOException
+- other exceptions are wrapped inside RuntimeException
+
+## Download ##
+Just add the following dependency in your `pom.xml`:
+```xml
+<dependency>
+    <groupId>com.github.ylegat</groupId>
+    <artifactId>uncheck</artifactId>
+    <version>1.0</version>
+</dependency>
 ```
