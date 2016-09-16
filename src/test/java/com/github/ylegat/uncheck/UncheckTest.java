@@ -11,7 +11,6 @@ import java.util.function.Function;
 import com.github.ylegat.uncheck.Uncheck.CheckedFunction;
 import org.junit.Test;
 import com.github.ylegat.uncheck.Uncheck.CheckedOperation;
-import com.github.ylegat.uncheck.Uncheck.CheckedSupplier;
 
 public class UncheckTest {
 
