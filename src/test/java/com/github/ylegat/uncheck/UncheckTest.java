@@ -81,7 +81,7 @@ public class UncheckTest {
     }
 
     @Test
-    public void should_create_unchecked_io_exception_from_operation_execution_checked_exception() {
+    public void should_create_runtime_exception_from_operation_execution_checked_exception() {
         // Given
         Exception exception = new Exception();
         CheckedOperation operation = () -> {
