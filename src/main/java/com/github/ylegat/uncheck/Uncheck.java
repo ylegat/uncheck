@@ -93,16 +93,6 @@ public class Uncheck {
      * @return a wrapper around the transformation function that handles exceptions in a lambda-friendly way.
      */
     public static <T, R> Function<T, R> uncheck(CheckedFunction<T, R> transformer) {
-        return value -> {
-            try {
-                return transformer.apply(value);
-            } catch (RuntimeException e) {
-                throw e;
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        };
+        return value -> uncheck(() -> transformer.apply(value));
     }
 }
