@@ -2,6 +2,7 @@ package com.github.ylegat.uncheck;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.util.function.Function;
 
 public class Uncheck {
 
@@ -24,6 +25,14 @@ public class Uncheck {
     @FunctionalInterface
     public interface CheckedOperation {
         void execute() throws Exception;
+    }
+
+    /**
+     * Represents an operation that returns no result.
+     */
+    @FunctionalInterface
+    public interface CheckedFunction<T, R> {
+        R apply(T param) throws Exception;
     }
 
     /**
@@ -67,5 +76,23 @@ public class Uncheck {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * <p>Wrap a transformation function.</p>
+     * <p>Exceptions are handled this way:</p>
+     * <ul>
+     * <li>RuntimeException are just propagated</li>
+     * <li>IOException are wrapped inside UncheckedIOException</li>
+     * <li>Other exceptions are wrapped inside RuntimeException</li>
+     * </ul>
+     *
+     * @param transformer the transformation function to apply
+     * @param <T>      the parameter type of the transformation function
+     * @param <R>      the result type of the transformation function
+     * @return a wrapper around the transformation function that handles exceptions in a lambda-friendly way.
+     */
+    public static <T, R> Function<T, R> uncheck(CheckedFunction<T, R> transformer) {
+        return value -> uncheck(() -> transformer.apply(value));
     }
 }
